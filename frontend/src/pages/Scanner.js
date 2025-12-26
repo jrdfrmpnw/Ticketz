@@ -51,9 +51,6 @@ export default function Scanner({ token, onLogout }) {
   }, [scanning, token]);
 
   const onScanSuccess = async (decodedText) => {
-    if (scanner) {
-      scanner.clear();
-    }
     setScanning(false);
 
     try {
