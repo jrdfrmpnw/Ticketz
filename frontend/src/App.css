@@ -1,34 +1,104 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+.retro-button {
+  background: #00FF94;
+  color: #000;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 1rem 2rem;
+  border: 2px solid transparent;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.retro-button:hover {
+  transform: translate(4px, -4px);
+  box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.2);
+  border-color: #fff;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.retro-button:active {
+  transform: translate(2px, -2px);
+  box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.2);
 }
 
-.App-link {
-    color: #61dafb;
+.retro-input {
+  background: #000;
+  border: none;
+  border-bottom: 2px solid #333;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  width: 100%;
+  transition: border-color 0.3s;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.retro-input:focus {
+  outline: none;
+  border-bottom-color: #00FF94;
+}
+
+.retro-input::placeholder {
+  color: #666;
+}
+
+.ticket-stub {
+  background: #1E1E1E;
+  border: 2px dashed #444;
+  padding: 2rem;
+  position: relative;
+}
+
+.ticket-stub::before,
+.ticket-stub::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #050505;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ticket-stub::before {
+  left: -10px;
+}
+
+.ticket-stub::after {
+  right: -10px;
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 255, 148, 0.5), 0 0 40px rgba(0, 255, 148, 0.3);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.5), 0 0 40px rgba(255, 51, 51, 0.3);
+}
+
+.animate-scan {
+  animation: scan 2s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 148, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 148, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.concert-heading {
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
 }
