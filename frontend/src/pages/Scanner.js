@@ -9,7 +9,6 @@ import { ScanLine, CheckCircle2, XCircle, LogOut } from 'lucide-react';
 export default function Scanner({ token, onLogout }) {
   const [scanning, setScanning] = useState(true);
   const [scanResult, setScanResult] = useState(null);
-  const [scanner, setScanner] = useState(null);
 
   useEffect(() => {
     if (scanning) {
