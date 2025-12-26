@@ -10,97 +10,97 @@
       "test": "Root API Endpoint",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:09.048590"
+      "timestamp": "2025-12-26T23:48:00.081974"
     },
     {
       "test": "Admin Registration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:09.339495"
+      "timestamp": "2025-12-26T23:48:00.344345"
     },
     {
       "test": "Staff Registration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:09.601462"
+      "timestamp": "2025-12-26T23:48:00.607950"
     },
     {
       "test": "Invalid Login",
       "success": true,
       "details": "Status: 401",
-      "timestamp": "2025-12-26T23:42:09.640362"
+      "timestamp": "2025-12-26T23:48:00.648524"
     },
     {
       "test": "Unauthorized Access",
       "success": false,
       "details": "Status: 403 (Expected: 401) - Not authenticated",
-      "timestamp": "2025-12-26T23:42:09.676821"
+      "timestamp": "2025-12-26T23:48:00.687484"
     },
     {
       "test": "Create Event",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:09.723502"
+      "timestamp": "2025-12-26T23:48:00.725965"
     },
     {
       "test": "Get Events",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:09.766753"
+      "timestamp": "2025-12-26T23:48:00.764423"
     },
     {
       "test": "Get Event Details",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:09.809239"
+      "timestamp": "2025-12-26T23:48:00.805564"
     },
     {
       "test": "Generate Tickets",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:10.310579"
+      "timestamp": "2025-12-26T23:48:01.310430"
     },
     {
       "test": "Scan Ticket (First Time)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:10.349874"
+      "timestamp": "2025-12-26T23:48:01.351617"
     },
     {
       "test": "Scan Ticket (Second Time)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:10.387881"
+      "timestamp": "2025-12-26T23:48:01.386563"
     },
     {
       "test": "Scan Invalid Ticket",
       "success": true,
       "details": "Status: 404",
-      "timestamp": "2025-12-26T23:42:10.427025"
+      "timestamp": "2025-12-26T23:48:01.423619"
     },
     {
       "test": "Event Statistics",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-12-26T23:42:10.468666"
+      "timestamp": "2025-12-26T23:48:01.459129"
     },
     {
       "test": "Staff Create Event (Forbidden)",
       "success": true,
       "details": "Status: 403",
-      "timestamp": "2025-12-26T23:42:10.504412"
+      "timestamp": "2025-12-26T23:48:01.494253"
     },
     {
       "test": "Staff Generate Tickets (Forbidden)",
       "success": true,
       "details": "Status: 403",
-      "timestamp": "2025-12-26T23:42:10.539379"
+      "timestamp": "2025-12-26T23:48:01.571137"
     },
     {
       "test": "Staff Event Stats (Forbidden)",
       "success": true,
       "details": "Status: 403",
-      "timestamp": "2025-12-26T23:42:10.576705"
+      "timestamp": "2025-12-26T23:48:01.613176"
     }
   ]
 }
