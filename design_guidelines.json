@@ -1,0 +1,147 @@
+{
+  "typography": {
+    "font_family": {
+      "headings": "Anton, sans-serif",
+      "body": "Space Grotesk, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "google_fonts_import": "https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap",
+    "scale": {
+      "h1": "text-6xl md:text-8xl uppercase tracking-tighter leading-none",
+      "h2": "text-4xl md:text-6xl uppercase tracking-tight",
+      "h3": "text-2xl md:text-3xl font-bold uppercase",
+      "body": "text-base md:text-lg leading-relaxed",
+      "caption": "text-sm font-mono uppercase tracking-widest opacity-70"
+    }
+  },
+  "colors": {
+    "palette": {
+      "background": "#050505",
+      "surface": "#121212",
+      "surface_highlight": "#1E1E1E",
+      "primary": "#00FF94",
+      "secondary": "#FF00FF",
+      "accent": "#00FFFF",
+      "warning": "#FF3333",
+      "text_main": "#EEEEEE",
+      "text_muted": "#888888",
+      "border": "#333333"
+    },
+    "usage": {
+      "body_bg": "bg-[#050505]",
+      "card_bg": "bg-[#121212]",
+      "primary_text": "text-[#00FF94]",
+      "neon_border": "border-[#00FF94]",
+      "error_state": "bg-[#FF3333] text-black"
+    }
+  },
+  "visual_enhancers": {
+    "noise_overlay": {
+      "css": "fixed inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-overlay",
+      "image_url": "https://images.unsplash.com/photo-1580122252289-8eccefa9ce2e?crop=entropy&cs=srgb&fm=jpg&q=85"
+    },
+    "crt_scanline": {
+      "css": "background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 2px, 3px 100%;"
+    },
+    "borders": {
+      "style": "border-2 border-white/10 hover:border-[#00FF94] transition-colors duration-300",
+      "radius": "rounded-none"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#00FF94] text-black font-bold uppercase tracking-wider px-8 py-4 hover:bg-[#00CC76] hover:translate-x-1 hover:-translate-y-1 transition-all border-2 border-transparent hover:border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]",
+      "secondary": "bg-transparent border-2 border-[#333333] text-white uppercase tracking-wider px-8 py-4 hover:border-white hover:text-[#00FF94] transition-all",
+      "destructive": "bg-[#FF3333] text-black font-bold uppercase px-8 py-4 hover:bg-red-600"
+    },
+    "cards": {
+      "default": "bg-[#121212] border border-[#333333] p-6 relative overflow-hidden group hover:border-[#00FF94]/50 transition-colors",
+      "ticket_stub": "bg-[#1E1E1E] border-2 border-dashed border-[#444] p-8 relative mask-image-[radial-gradient(circle_at_center,transparent_10px,black_11px)_repeat-y_left_-10px]"
+    },
+    "inputs": {
+      "default": "bg-black border-b-2 border-[#333333] px-4 py-3 text-white focus:outline-none focus:border-[#00FF94] placeholder:text-gray-600 font-mono w-full transition-colors rounded-none"
+    }
+  },
+  "layout": {
+    "grid_system": "grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8",
+    "container": "max-w-7xl mx-auto px-4 md:px-8",
+    "spacing": {
+      "section_gap": "py-20 md:py-32",
+      "element_gap": "gap-6"
+    }
+  },
+  "motion": {
+    "hover_effects": "hover:-translate-y-1 transition-transform duration-200",
+    "page_transition": "animate-in fade-in slide-in-from-bottom-4 duration-500",
+    "marquee": "animate-marquee linear infinite"
+  },
+  "accessibility": {
+    "contrast_check": "Ensure neon text is only used on dark backgrounds. Use white for body text.",
+    "focus_states": "focus:ring-2 focus:ring-[#00FF94] focus:ring-offset-2 focus:ring-offset-black"
+  },
+  "media": {
+    "image_style": "grayscale contrast-125 brightness-90 hover:grayscale-0 transition-all duration-500 mix-blend-luminosity"
+  },
+  "image_urls": {
+    "textures": [
+      {
+        "url": "https://images.unsplash.com/photo-1580122252289-8eccefa9ce2e?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "category": "background_texture",
+        "description": "Grunge paper texture for global noise overlay"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1515697203610-d0513edf9cb4?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "category": "card_texture",
+        "description": "Rolled paper texture for ticket backgrounds"
+      }
+    ],
+    "concert_vibes": [
+      {
+        "url": "https://images.unsplash.com/photo-1641364623402-f3c736aff976?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "category": "hero_image",
+        "description": "Retro concert crowd silhouette"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1681999784511-60c16223abc0?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "category": "login_bg",
+        "description": "High energy concert crowd"
+      }
+    ],
+    "retro_objects": [
+      {
+        "url": "https://images.unsplash.com/photo-1652927855218-699d4c53bb87?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "category": "decorative",
+        "description": "Vintage cassette tape with neon"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS: Add the Google Fonts import to index.css immediately.",
+    "2. GLOBAL NOISE: Create a 'NoiseOverlay' component using the texture image and add it to App.js/Layout so it persists across all pages.",
+    "3. TICKET DESIGN: The ticket component must look like a physical ticket stub. Use dashed borders and a monospace font for the ID.",
+    "4. SCANNER UI: The scanner page should look like a retro sci-fi device. Use green/red overlays for success/failure.",
+    "5. NO ROUNDED CORNERS: Enforce 'rounded-none' on almost everything to maintain the brutalist/retro poster vibe.",
+    "6. USE SHADCN SMARTLY: Use Shadcn for functionality (Dialogs, Forms) but STRIP their default styling. Remove rounded corners and soft shadows. Apply the custom borders defined in 'components'.",
+    "7. ANIMATIONS: Use 'framer-motion' for page transitions and ticket reveal effects.",
+    "8. MOBILE FIRST: Ensure the scanner view is perfectly optimized for mobile (large buttons, clear feedback)."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy",
+    "You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms",
+    "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style",
+    "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯📚🎭🎬🎪🎉🎊🎁🎀🎂🍰🎈🎨🎰💰💵💳🏦💎🪙💸🤑📊📈📉💹🔢🏆🥇 etc for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary.",
+    "Main agent relies on these image URLs. Missing categories (especially sponsor logos) = main agent will use placeholder text which is FORBIDDEN",
+    "Prioritize using pre-existing components from src/components/ui when applicable",
+    "Create new components that match the style and conventions of existing components when needed",
+    "Examine existing components to understand the project's component patterns before creating new ones",
+    "Components MUST use named exports (export const ComponentName = ...)",
+    "Pages MUST use default exports (export default function PageName() {...})",
+    "Use sonner for toasts. Sonner component are located in /app/src/components/ui/sonner.tsx"
+  ]
+}
