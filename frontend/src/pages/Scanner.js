@@ -50,29 +50,6 @@ export default function Scanner({ token, onLogout }) {
     }
   }, [scanning, token]);
 
-  const onScanSuccess = async (decodedText) => {
-    setScanning(false);
-
-    try {
-      const response = await axios.post(`${API}/tickets/scan`, 
-        { ticket_id: decodedText },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setScanResult(response.data);
-    } catch (error) {
-      if (error.response?.data) {
-        setScanResult(error.response.data);
-      } else {
-        toast.error('Scan failed');
-        setScanning(true);
-      }
-    }
-  };
-
-  const onScanFailure = (error) => {
-    // Ignore scan failures (happens continuously while searching for QR code)
-  };
-
   const handleRescan = () => {
     setScanResult(null);
     setScanning(true);
