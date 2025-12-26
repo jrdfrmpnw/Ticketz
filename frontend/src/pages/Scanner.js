@@ -43,7 +43,6 @@ export default function Scanner({ token, onLogout }) {
       };
 
       html5QrcodeScanner.render(onScanSuccessWrapper, onScanFailureWrapper);
-      setScanner(html5QrcodeScanner);
 
       return () => {
         html5QrcodeScanner.clear().catch(() => {});
