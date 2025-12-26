@@ -19,14 +19,38 @@ export default function Scanner({ token, onLogout }) {
         false
       );
 
-      html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+      const onScanSuccessWrapper = async (decodedText) => {
+        html5QrcodeScanner.clear();
+        setScanning(false);
+
+        try {
+          const response = await axios.post(`${API}/tickets/scan`, 
+            { ticket_id: decodedText },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setScanResult(response.data);
+        } catch (error) {
+          if (error.response?.data) {
+            setScanResult(error.response.data);
+          } else {
+            toast.error('Scan failed');
+            setScanning(true);
+          }
+        }
+      };
+
+      const onScanFailureWrapper = (error) => {
+        // Ignore scan failures
+      };
+
+      html5QrcodeScanner.render(onScanSuccessWrapper, onScanFailureWrapper);
       setScanner(html5QrcodeScanner);
 
       return () => {
-        html5QrcodeScanner.clear();
+        html5QrcodeScanner.clear().catch(() => {});
       };
     }
-  }, [scanning]);
+  }, [scanning, token]);
 
   const onScanSuccess = async (decodedText) => {
     if (scanner) {
