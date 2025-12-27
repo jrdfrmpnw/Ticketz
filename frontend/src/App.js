@@ -50,25 +50,52 @@ function App() {
         <Routes>
           <Route 
             path="/login" 
-            element={!token ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />} 
+            element={
+              !token ? <Login onLogin={handleLogin} /> : 
+              user?.role === 'admin' ? <Navigate to="/dashboard" replace /> : 
+              <Navigate to="/scanner" replace />
+            } 
           />
           <Route 
             path="/dashboard" 
-            element={token && user?.role === 'admin' ? <AdminDashboard token={token} user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} 
+            element={
+              token && user?.role === 'admin' ? 
+              <AdminDashboard token={token} user={user} onLogout={handleLogout} /> : 
+              <Navigate to="/login" replace />
+            } 
           />
           <Route 
             path="/create-event" 
-            element={token && user?.role === 'admin' ? <CreateEvent token={token} /> : <Navigate to="/login" />} 
+            element={
+              token && user?.role === 'admin' ? 
+              <CreateEvent token={token} /> : 
+              <Navigate to="/login" replace />
+            } 
           />
           <Route 
             path="/events/:eventId" 
-            element={token && user?.role === 'admin' ? <EventDetails token={token} /> : <Navigate to="/login" />} 
+            element={
+              token && user?.role === 'admin' ? 
+              <EventDetails token={token} /> : 
+              <Navigate to="/login" replace />
+            } 
           />
           <Route 
             path="/scanner" 
-            element={token ? <Scanner token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} 
+            element={
+              token ? 
+              <Scanner token={token} onLogout={handleLogout} /> : 
+              <Navigate to="/login" replace />
+            } 
           />
-          <Route path="/" element={<Navigate to={token ? (user?.role === 'admin' ? '/dashboard' : '/scanner') : '/login'} />} />
+          <Route 
+            path="/" 
+            element={
+              <Navigate to={
+                token ? (user?.role === 'admin' ? '/dashboard' : '/scanner') : '/login'
+              } replace />
+            } 
+          />
         </Routes>
       </BrowserRouter>
     </div>
