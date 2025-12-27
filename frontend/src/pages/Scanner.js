@@ -12,6 +12,7 @@ export default function Scanner({ token, onLogout }) {
   const [scanning, setScanning] = useState(false);
   const [cameraMode, setCameraMode] = useState(false);
   const [cameraError, setCameraError] = useState(null);
+  const [cameraReady, setCameraReady] = useState(false);
 
   const validateTicket = async (ticketIdToScan) => {
     setScanning(true);
