@@ -13,7 +13,7 @@ export default function Scanner({ token, onLogout }) {
   const [manualTicketId, setManualTicketId] = useState('');
 
   useEffect(() => {
-    if (scanning) {
+    if (scanning && !manualMode) {
       const html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader",
         { fps: 10, qrbox: { width: 250, height: 250 } },
@@ -50,7 +50,7 @@ export default function Scanner({ token, onLogout }) {
         html5QrcodeScanner.clear().catch(() => {});
       };
     }
-  }, [scanning, token]);
+  }, [scanning, manualMode, token]);
 
   const handleRescan = () => {
     setScanResult(null);
