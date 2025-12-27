@@ -118,7 +118,39 @@ export default function Scanner({ token, onLogout }) {
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-2xl">
           <AnimatePresence mode="wait">
-            {scanning ? (
+            {manualMode && !scanResult ? (
+              <motion.div
+                key="manual"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="bg-[#121212] border-2 border-[#00FF94] p-8"
+              >
+                <h2 className="text-2xl font-bold uppercase text-center mb-6 text-[#00FF94]">Enter Ticket ID</h2>
+                <form onSubmit={handleManualScan} className="space-y-6" data-testid="manual-scan-form">
+                  <input
+                    type="text"
+                    value={manualTicketId}
+                    onChange={(e) => setManualTicketId(e.target.value)}
+                    className="retro-input text-center"
+                    placeholder="Paste or type ticket ID"
+                    data-testid="manual-ticket-input"
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    className="retro-button w-full"
+                    disabled={!manualTicketId.trim()}
+                    data-testid="manual-scan-button"
+                  >
+                    SCAN TICKET
+                  </button>
+                </form>
+                <p className="text-center text-[#888] text-sm font-mono uppercase tracking-wider mt-6">
+                  Use this for manual entry or testing
+                </p>
+              </motion.div>
+            ) : scanning && !manualMode ? (
               <motion.div
                 key="scanner"
                 initial={{ opacity: 0, scale: 0.9 }}
