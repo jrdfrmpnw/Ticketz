@@ -180,16 +180,26 @@ export default function Scanner({ token, onLogout }) {
                     </div>
 
                     {cameraError ? (
-                      <div className="bg-[#FF3333]/20 border border-[#FF3333] p-6 text-center">
-                        <p className="text-[#FF3333] font-mono">{cameraError}</p>
+                      <div className="bg-[#FF3333]/20 border-2 border-[#FF3333] p-6 text-center space-y-4">
+                        <XCircle size={60} className="mx-auto text-[#FF3333]" />
+                        <p className="text-[#FF3333] font-mono text-sm">{cameraError}</p>
+                        <div className="bg-[#1E1E1E] p-4 text-left text-xs text-[#888]">
+                          <p className="font-bold text-white mb-2">To enable camera:</p>
+                          <ul className="list-disc list-inside space-y-1">
+                            <li>Look for camera icon in browser address bar</li>
+                            <li>Click "Allow" when prompted</li>
+                            <li>On iOS: Settings → Safari → Camera</li>
+                            <li>On Android: Settings → Site Settings → Camera</li>
+                          </ul>
+                        </div>
                         <button
-                          onClick={() => setCameraError(null)}
-                          className="retro-button mt-4"
+                          onClick={toggleCameraMode}
+                          className="retro-button w-full"
                         >
                           TRY AGAIN
                         </button>
                       </div>
-                    ) : (
+                    ) : cameraReady ? (
                       <div className="relative bg-black" style={{ aspectRatio: '1/1', maxHeight: '500px' }}>
                         <QrReader
                           constraints={{ facingMode: 'environment' }}
@@ -204,12 +214,22 @@ export default function Scanner({ token, onLogout }) {
                             <div className="text-[#00FF94] font-bold text-2xl uppercase">VALIDATING...</div>
                           </div>
                         )}
+                        <div className="absolute top-4 left-4 right-4 bg-black/70 p-3 text-center">
+                          <p className="text-[#00FF94] font-bold text-sm uppercase">Camera Active - Point at QR Code</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-[#1E1E1E] border border-[#333] p-8 text-center space-y-4">
+                        <div className="animate-pulse">
+                          <Camera size={80} className="mx-auto text-[#00FF94]" />
+                        </div>
+                        <p className="text-[#888] font-mono text-sm">Initializing camera...</p>
                       </div>
                     )}
 
                     <div className="mt-6 p-4 bg-[#1E1E1E] border border-[#333]">
                       <p className="text-xs text-[#888] uppercase tracking-wider text-center">
-                        Position QR code in camera view • Auto-scans when detected
+                        {cameraReady ? 'Auto-scans when QR code detected' : 'Grant camera permission when prompted'}
                       </p>
                     </div>
                   </div>
