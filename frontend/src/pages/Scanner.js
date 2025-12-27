@@ -55,9 +55,15 @@ export default function Scanner({ token, onLogout }) {
     }
     
     if (error) {
-      // Only show meaningful errors
       if (error.name === 'NotAllowedError') {
-        setCameraError('Camera permission denied. Please enable camera access.');
+        setCameraError('Camera permission denied. Please allow camera access in your browser settings.');
+        setCameraMode(false);
+        toast.error('Camera access denied');
+      } else if (error.name === 'NotFoundError') {
+        setCameraError('No camera found on this device.');
+        setCameraMode(false);
+      } else if (error.name === 'NotReadableError') {
+        setCameraError('Camera is already in use by another app.');
         setCameraMode(false);
       }
     }
@@ -67,12 +73,46 @@ export default function Scanner({ token, onLogout }) {
     setScanResult(null);
     setTicketId('');
     setCameraError(null);
+    setCameraReady(false);
   };
 
-  const toggleCameraMode = () => {
-    setCameraMode(!cameraMode);
-    setCameraError(null);
-    setScanResult(null);
+  const toggleCameraMode = async () => {
+    if (!cameraMode) {
+      // Switching to camera mode
+      setCameraError(null);
+      setScanResult(null);
+      
+      // Check if camera API is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setCameraError('Camera not supported on this browser. Please use Chrome, Safari, or Firefox.');
+        toast.error('Camera not supported');
+        return;
+      }
+      
+      // Request camera permission
+      try {
+        await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        setCameraMode(true);
+        setCameraReady(true);
+        toast.success('Camera ready - point at QR code');
+      } catch (err) {
+        if (err.name === 'NotAllowedError') {
+          setCameraError('Camera permission denied. Please click "Allow" when your browser asks for camera access.');
+          toast.error('Camera permission needed');
+        } else if (err.name === 'NotFoundError') {
+          setCameraError('No camera found on this device.');
+          toast.error('No camera available');
+        } else {
+          setCameraError(`Camera error: ${err.message}`);
+          toast.error('Camera unavailable');
+        }
+      }
+    } else {
+      // Switching back to manual mode
+      setCameraMode(false);
+      setCameraReady(false);
+      setCameraError(null);
+    }
   };
 
   return (
