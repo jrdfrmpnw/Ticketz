@@ -1,46 +1,77 @@
 import { useState } from 'react';
+import { QrReader } from 'react-qr-reader';
 import axios from 'axios';
 import { API } from '../App';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ScanLine, CheckCircle2, XCircle, LogOut, Keyboard } from 'lucide-react';
+import { ScanLine, CheckCircle2, XCircle, LogOut, Keyboard, Camera } from 'lucide-react';
 
 export default function Scanner({ token, onLogout }) {
   const [scanResult, setScanResult] = useState(null);
   const [ticketId, setTicketId] = useState('');
   const [scanning, setScanning] = useState(false);
+  const [cameraMode, setCameraMode] = useState(false);
+  const [cameraError, setCameraError] = useState(null);
 
-  const handleScan = async (e) => {
-    e.preventDefault();
-    if (!ticketId.trim()) {
-      toast.error('Please enter a ticket ID');
-      return;
-    }
-
+  const validateTicket = async (ticketIdToScan) => {
     setScanning(true);
 
     try {
       const response = await axios.post(`${API}/tickets/scan`, 
-        { ticket_id: ticketId.trim() },
+        { ticket_id: ticketIdToScan.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setScanResult(response.data);
-      setTicketId('');
+      setCameraMode(false);
     } catch (error) {
       if (error.response?.data) {
         setScanResult(error.response.data);
-        setTicketId('');
+        setCameraMode(false);
       } else {
         toast.error(error.response?.data?.detail || 'Scan failed');
       }
     } finally {
       setScanning(false);
+      setTicketId('');
+    }
+  };
+
+  const handleManualScan = async (e) => {
+    e.preventDefault();
+    if (!ticketId.trim()) {
+      toast.error('Please enter a ticket ID');
+      return;
+    }
+    await validateTicket(ticketId);
+  };
+
+  const handleQRScan = (result, error) => {
+    if (result) {
+      const scannedText = result?.text;
+      if (scannedText && !scanning) {
+        validateTicket(scannedText);
+      }
+    }
+    
+    if (error) {
+      // Only show meaningful errors
+      if (error.name === 'NotAllowedError') {
+        setCameraError('Camera permission denied. Please enable camera access.');
+        setCameraMode(false);
+      }
     }
   };
 
   const handleRescan = () => {
     setScanResult(null);
     setTicketId('');
+    setCameraError(null);
+  };
+
+  const toggleCameraMode = () => {
+    setCameraMode(!cameraMode);
+    setCameraError(null);
+    setScanResult(null);
   };
 
   return (
@@ -71,54 +102,131 @@ export default function Scanner({ token, onLogout }) {
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="space-y-6"
               >
-                <div className="bg-[#121212] border-2 border-[#00FF94] p-8 scanline-effect">
-                  <div className="flex items-center justify-center gap-3 mb-6">
-                    <ScanLine size={48} className="text-[#00FF94] animate-pulse" />
-                    <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN TICKET</h2>
-                  </div>
+                {/* Mode Toggle */}
+                <div className="flex justify-center gap-4 mb-6">
+                  <button
+                    onClick={() => { setCameraMode(false); setCameraError(null); }}
+                    className={`px-6 py-3 uppercase tracking-wider font-bold transition-all border-2 flex items-center gap-2 ${
+                      !cameraMode 
+                        ? 'bg-[#00FF94] text-black border-[#00FF94]' 
+                        : 'bg-transparent text-[#888] border-[#333] hover:border-[#00FF94] hover:text-[#00FF94]'
+                    }`}
+                    data-testid="manual-mode-button"
+                  >
+                    <Keyboard size={20} />
+                    MANUAL
+                  </button>
+                  <button
+                    onClick={toggleCameraMode}
+                    className={`px-6 py-3 uppercase tracking-wider font-bold transition-all border-2 flex items-center gap-2 ${
+                      cameraMode 
+                        ? 'bg-[#00FF94] text-black border-[#00FF94]' 
+                        : 'bg-transparent text-[#888] border-[#333] hover:border-[#00FF94] hover:text-[#00FF94]'
+                    }`}
+                    data-testid="camera-mode-button"
+                  >
+                    <Camera size={20} />
+                    CAMERA
+                  </button>
+                </div>
 
-                  <form onSubmit={handleScan} className="space-y-6" data-testid="scan-form">
-                    <div>
-                      <label className="block text-sm uppercase tracking-wider mb-3 text-[#888] font-mono flex items-center gap-2">
-                        <Keyboard size={16} />
-                        Enter Ticket ID
-                      </label>
-                      <input
-                        type="text"
-                        value={ticketId}
-                        onChange={(e) => setTicketId(e.target.value)}
-                        className="retro-input text-center text-lg"
-                        placeholder="Paste or type ticket ID here"
-                        data-testid="ticket-id-input"
-                        autoFocus
-                        disabled={scanning}
-                      />
+                {cameraMode ? (
+                  /* Camera Scanner */
+                  <div className="bg-[#121212] border-2 border-[#00FF94] p-6 scanline-effect" data-testid="camera-scanner">
+                    <div className="flex items-center justify-center gap-3 mb-6">
+                      <Camera size={48} className="text-[#00FF94] animate-pulse" />
+                      <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN QR CODE</h2>
                     </div>
 
-                    <button
-                      type="submit"
-                      className="retro-button w-full text-xl py-6"
-                      disabled={!ticketId.trim() || scanning}
-                      data-testid="scan-button"
-                    >
-                      {scanning ? 'VALIDATING...' : 'VALIDATE TICKET'}
-                    </button>
-                  </form>
+                    {cameraError ? (
+                      <div className="bg-[#FF3333]/20 border border-[#FF3333] p-6 text-center">
+                        <p className="text-[#FF3333] font-mono">{cameraError}</p>
+                        <button
+                          onClick={() => setCameraError(null)}
+                          className="retro-button mt-4"
+                        >
+                          TRY AGAIN
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="relative bg-black" style={{ aspectRatio: '1/1', maxHeight: '500px' }}>
+                        <QrReader
+                          constraints={{ facingMode: 'environment' }}
+                          onResult={handleQRScan}
+                          className="w-full h-full"
+                          containerStyle={{ width: '100%', height: '100%' }}
+                          videoContainerStyle={{ width: '100%', height: '100%', paddingTop: '0' }}
+                          videoStyle={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                        {scanning && (
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <div className="text-[#00FF94] font-bold text-2xl uppercase">VALIDATING...</div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                  <div className="mt-8 p-4 bg-[#1E1E1E] border border-[#333]">
-                    <p className="text-xs text-[#888] uppercase tracking-wider text-center">
-                      Ticket IDs can be found in the email or admin dashboard
-                    </p>
+                    <div className="mt-6 p-4 bg-[#1E1E1E] border border-[#333]">
+                      <p className="text-xs text-[#888] uppercase tracking-wider text-center">
+                        Position QR code in camera view • Auto-scans when detected
+                      </p>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  /* Manual Entry */
+                  <div className="bg-[#121212] border-2 border-[#00FF94] p-8 scanline-effect">
+                    <div className="flex items-center justify-center gap-3 mb-6">
+                      <ScanLine size={48} className="text-[#00FF94] animate-pulse" />
+                      <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN TICKET</h2>
+                    </div>
+
+                    <form onSubmit={handleManualScan} className="space-y-6" data-testid="scan-form">
+                      <div>
+                        <label className="block text-sm uppercase tracking-wider mb-3 text-[#888] font-mono flex items-center gap-2">
+                          <Keyboard size={16} />
+                          Enter Ticket ID
+                        </label>
+                        <input
+                          type="text"
+                          value={ticketId}
+                          onChange={(e) => setTicketId(e.target.value)}
+                          className="retro-input text-center text-lg"
+                          placeholder="Paste or type ticket ID here"
+                          data-testid="ticket-id-input"
+                          autoFocus
+                          disabled={scanning}
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="retro-button w-full text-xl py-6"
+                        disabled={!ticketId.trim() || scanning}
+                        data-testid="scan-button"
+                      >
+                        {scanning ? 'VALIDATING...' : 'VALIDATE TICKET'}
+                      </button>
+                    </form>
+
+                    <div className="mt-8 p-4 bg-[#1E1E1E] border border-[#333]">
+                      <p className="text-xs text-[#888] uppercase tracking-wider text-center">
+                        Ticket IDs can be found in the email or admin dashboard
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="text-center">
                   <p className="text-[#888] font-mono text-sm">
-                    Staff can copy ticket IDs from attendee emails or scan QR codes with a handheld scanner
+                    {cameraMode 
+                      ? 'Point camera at QR code for instant validation' 
+                      : 'Staff can copy ticket IDs from attendee emails or use camera mode'
+                    }
                   </p>
                 </div>
               </motion.div>
             ) : (
+              /* Scan Result */
               <motion.div
                 key="result"
                 initial={{ opacity: 0, scale: 0.9 }}
