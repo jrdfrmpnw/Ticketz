@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import axios from 'axios';
 import { API } from '../App';
@@ -7,23 +7,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ScanLine, CheckCircle2, XCircle, LogOut } from 'lucide-react';
 
 export default function Scanner({ token, onLogout }) {
-  const [scanning, setScanning] = useState(true);
   const [scanResult, setScanResult] = useState(null);
   const [manualMode, setManualMode] = useState(false);
   const [manualTicketId, setManualTicketId] = useState('');
+  const scannerRef = useRef(null);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
-    if (scanning && !manualMode) {
-      const html5QrcodeScanner = new Html5QrcodeScanner(
+    if (!manualMode && !scanResult && !isInitialized.current) {
+      isInitialized.current = true;
+      
+      const scanner = new Html5QrcodeScanner(
         "qr-reader",
         { fps: 10, qrbox: { width: 250, height: 250 } },
         false
       );
 
-      const onScanSuccessWrapper = async (decodedText) => {
-        html5QrcodeScanner.clear();
-        setScanning(false);
-
+      const onScanSuccess = async (decodedText) => {
+        scanner.clear().catch(() => {});
+        
         try {
           const response = await axios.post(`${API}/tickets/scan`, 
             { ticket_id: decodedText },
@@ -35,35 +37,36 @@ export default function Scanner({ token, onLogout }) {
             setScanResult(error.response.data);
           } else {
             toast.error('Scan failed');
-            setScanning(true);
           }
         }
       };
 
-      const onScanFailureWrapper = (error) => {
-        // Ignore scan failures
+      const onScanFailure = () => {
+        // Ignore continuous scan failures
       };
 
-      html5QrcodeScanner.render(onScanSuccessWrapper, onScanFailureWrapper);
+      scanner.render(onScanSuccess, onScanFailure);
+      scannerRef.current = scanner;
 
       return () => {
-        html5QrcodeScanner.clear().catch(() => {});
+        if (scannerRef.current) {
+          scannerRef.current.clear().catch(() => {});
+        }
       };
     }
-  }, [scanning, manualMode, token]);
+  }, [manualMode, scanResult, token]);
 
   const handleRescan = () => {
     setScanResult(null);
-    setScanning(true);
     setManualMode(false);
     setManualTicketId('');
+    isInitialized.current = false;
   };
 
   const handleManualScan = async (e) => {
     e.preventDefault();
     if (!manualTicketId.trim()) return;
 
-    setScanning(false);
     try {
       const response = await axios.post(`${API}/tickets/scan`, 
         { ticket_id: manualTicketId.trim() },
@@ -80,13 +83,12 @@ export default function Scanner({ token, onLogout }) {
   };
 
   const toggleManualMode = () => {
-    setManualMode(!manualMode);
-    if (!manualMode) {
-      setScanning(false);
-    } else {
-      setScanResult(null);
-      setScanning(true);
+    if (scannerRef.current) {
+      scannerRef.current.clear().catch(() => {});
     }
+    isInitialized.current = false;
+    setScanResult(null);
+    setManualMode(!manualMode);
   };
 
   return (
@@ -96,13 +98,15 @@ export default function Scanner({ token, onLogout }) {
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <h1 className="concert-heading text-3xl text-[#00FF94]" data-testid="scanner-heading">SCANNER</h1>
           <div className="flex items-center gap-4">
-            <button
-              onClick={toggleManualMode}
-              className="text-[#888] hover:text-[#00FF94] transition-colors text-sm uppercase tracking-wider"
-              data-testid="toggle-mode-button"
-            >
-              {manualMode ? 'QR Mode' : 'Manual ID'}
-            </button>
+            {!scanResult && (
+              <button
+                onClick={toggleManualMode}
+                className="text-[#888] hover:text-[#00FF94] transition-colors text-sm uppercase tracking-wider"
+                data-testid="toggle-mode-button"
+              >
+                {manualMode ? 'QR Mode' : 'Manual ID'}
+              </button>
+            )}
             <button
               onClick={onLogout}
               className="text-[#888] hover:text-white transition-colors"
@@ -150,7 +154,7 @@ export default function Scanner({ token, onLogout }) {
                   Use this for manual entry or testing
                 </p>
               </motion.div>
-            ) : scanning && !manualMode ? (
+            ) : !manualMode && !scanResult ? (
               <motion.div
                 key="scanner"
                 initial={{ opacity: 0, scale: 0.9 }}
