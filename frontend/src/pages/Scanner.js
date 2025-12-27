@@ -55,6 +55,38 @@ export default function Scanner({ token, onLogout }) {
   const handleRescan = () => {
     setScanResult(null);
     setScanning(true);
+    setManualMode(false);
+    setManualTicketId('');
+  };
+
+  const handleManualScan = async (e) => {
+    e.preventDefault();
+    if (!manualTicketId.trim()) return;
+
+    setScanning(false);
+    try {
+      const response = await axios.post(`${API}/tickets/scan`, 
+        { ticket_id: manualTicketId.trim() },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setScanResult(response.data);
+    } catch (error) {
+      if (error.response?.data) {
+        setScanResult(error.response.data);
+      } else {
+        toast.error('Scan failed');
+      }
+    }
+  };
+
+  const toggleManualMode = () => {
+    setManualMode(!manualMode);
+    if (!manualMode) {
+      setScanning(false);
+    } else {
+      setScanResult(null);
+      setScanning(true);
+    }
   };
 
   return (
