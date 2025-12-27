@@ -95,13 +95,22 @@ export default function Scanner({ token, onLogout }) {
       <div className="bg-[#121212] border-b-2 border-[#333] p-4">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <h1 className="concert-heading text-3xl text-[#00FF94]" data-testid="scanner-heading">SCANNER</h1>
-          <button
-            onClick={onLogout}
-            className="text-[#888] hover:text-white transition-colors"
-            data-testid="logout-button"
-          >
-            <LogOut size={24} />
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleManualMode}
+              className="text-[#888] hover:text-[#00FF94] transition-colors text-sm uppercase tracking-wider"
+              data-testid="toggle-mode-button"
+            >
+              {manualMode ? 'QR Mode' : 'Manual ID'}
+            </button>
+            <button
+              onClick={onLogout}
+              className="text-[#888] hover:text-white transition-colors"
+              data-testid="logout-button"
+            >
+              <LogOut size={24} />
+            </button>
+          </div>
         </div>
       </div>
 
