@@ -43,6 +43,19 @@ export default function AdminDashboard({ token, user, onLogout }) {
     }
   };
 
+  const handleDeleteEvent = async (eventId, eventName) => {
+    try {
+      await axios.delete(`${API}/events/${eventId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success(`Event "${eventName}" deleted successfully`);
+      setDeleteConfirm(null);
+      fetchEvents(); // Refresh the list
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to delete event');
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <div className="grid-bg min-h-screen">
