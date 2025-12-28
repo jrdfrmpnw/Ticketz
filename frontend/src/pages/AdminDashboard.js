@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API } from '../App';
 import { toast } from 'sonner';
-import { motion } from 'framer-motion';
-import { Calendar, MapPin, Users, TrendingUp, LogOut, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Calendar, MapPin, Users, TrendingUp, LogOut, Plus, Trash2 } from 'lucide-react';
 
 export default function AdminDashboard({ token, user, onLogout }) {
   const [events, setEvents] = useState([]);
