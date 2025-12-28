@@ -249,13 +249,14 @@ export default function Scanner({ token, onLogout }) {
                           audio={false}
                           screenshotFormat="image/jpeg"
                           videoConstraints={{
-                            facingMode: 'environment',
-                            width: 1280,
-                            height: 720
+                            facingMode: { ideal: 'environment' },
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 }
                           }}
                           onUserMedia={handleUserMedia}
                           onUserMediaError={handleUserMediaError}
                           className="w-full h-full object-cover"
+                          mirrored={false}
                         />
                         
                         {/* Scanning overlay */}
