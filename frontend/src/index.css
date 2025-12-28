@@ -15,7 +15,7 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #050505;
+  background: #050505 url('https://customer-assets.emergentagent.com/job_venuepass-1/artifacts/s4d4du1m_image0.jpeg') center/cover fixed;
   color: #EEEEEE;
   overflow-x: hidden;
 }
