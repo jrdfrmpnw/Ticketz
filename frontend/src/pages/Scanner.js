@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import { useState, useRef, useCallback } from 'react';
+import Webcam from 'react-webcam';
+import { BrowserMultiFormatReader } from '@zxing/browser';
 import axios from 'axios';
 import { API } from '../App';
 import { toast } from 'sonner';
@@ -12,7 +13,8 @@ export default function Scanner({ token, onLogout }) {
   const [scanning, setScanning] = useState(false);
   const [cameraMode, setCameraMode] = useState(false);
   const [cameraError, setCameraError] = useState(null);
-  const [cameraReady, setCameraReady] = useState(false);
+  const webcamRef = useRef(null);
+  const scanIntervalRef = useRef(null);
 
   const validateTicket = async (ticketIdToScan) => {
     setScanning(true);
@@ -24,10 +26,12 @@ export default function Scanner({ token, onLogout }) {
       );
       setScanResult(response.data);
       setCameraMode(false);
+      stopScanning();
     } catch (error) {
       if (error.response?.data) {
         setScanResult(error.response.data);
         setCameraMode(false);
+        stopScanning();
       } else {
         toast.error(error.response?.data?.detail || 'Scan failed');
       }
@@ -46,34 +50,38 @@ export default function Scanner({ token, onLogout }) {
     await validateTicket(ticketId);
   };
 
-  const handleQRScan = (result, error) => {
-    if (result) {
-      const scannedText = result?.text;
-      if (scannedText && !scanning) {
-        validateTicket(scannedText);
-      }
-    }
-    
-    if (error) {
-      if (error.name === 'NotAllowedError') {
-        setCameraError('Camera permission denied. Please allow camera access in your browser settings.');
-        setCameraMode(false);
-        toast.error('Camera access denied');
-      } else if (error.name === 'NotFoundError') {
-        setCameraError('No camera found on this device.');
-        setCameraMode(false);
-      } else if (error.name === 'NotReadableError') {
-        setCameraError('Camera is already in use by another app.');
-        setCameraMode(false);
-      }
+  const stopScanning = () => {
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+      scanIntervalRef.current = null;
     }
   };
+
+  const startScanning = useCallback(() => {
+    const codeReader = new BrowserMultiFormatReader();
+    
+    scanIntervalRef.current = setInterval(async () => {
+      if (webcamRef.current && !scanning) {
+        const imageSrc = webcamRef.current.getScreenshot();
+        if (imageSrc) {
+          try {
+            const result = await codeReader.decodeFromImageUrl(imageSrc);
+            if (result && result.text) {
+              console.log('QR Code detected:', result.text);
+              validateTicket(result.text);
+            }
+          } catch (err) {
+            // No QR code found in this frame, continue scanning
+          }
+        }
+      }
+    }, 500); // Scan every 500ms
+  }, [scanning]);
 
   const handleRescan = () => {
     setScanResult(null);
     setTicketId('');
     setCameraError(null);
-    setCameraReady(false);
   };
 
   const toggleCameraMode = async () => {
@@ -93,8 +101,11 @@ export default function Scanner({ token, onLogout }) {
       try {
         await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         setCameraMode(true);
-        setCameraReady(true);
         toast.success('Camera ready - point at QR code');
+        // Start scanning after a short delay to let camera initialize
+        setTimeout(() => {
+          startScanning();
+        }, 1000);
       } catch (err) {
         if (err.name === 'NotAllowedError') {
           setCameraError('Camera permission denied. Please click "Allow" when your browser asks for camera access.');
@@ -109,10 +120,21 @@ export default function Scanner({ token, onLogout }) {
       }
     } else {
       // Switching back to manual mode
+      stopScanning();
       setCameraMode(false);
-      setCameraReady(false);
       setCameraError(null);
     }
+  };
+
+  const handleUserMedia = () => {
+    console.log('Camera stream started');
+  };
+
+  const handleUserMediaError = (error) => {
+    console.error('Camera error:', error);
+    setCameraError('Failed to access camera. Please check permissions.');
+    setCameraMode(false);
+    toast.error('Camera access failed');
   };
 
   return (
@@ -146,10 +168,16 @@ export default function Scanner({ token, onLogout }) {
                 {/* Mode Toggle */}
                 <div className="flex justify-center gap-4 mb-6">
                   <button
-                    onClick={() => { setCameraMode(false); setCameraError(null); }}
-                    className={`px-6 py-3 uppercase tracking-wider font-bold transition-all border-2 flex items-center gap-2 ${
+                    onClick={() => { 
+                      if (cameraMode) {
+                        stopScanning();
+                        setCameraMode(false);
+                      }
+                      setCameraError(null); 
+                    }}
+                    className={`px-6 py-3 uppercase tracking-wider font-bold border-2 flex items-center gap-2 ${
                       !cameraMode 
-                        ? 'bg-[#FF0000] text-black border-[#FF0000]' 
+                        ? 'bg-[#FF0000] text-white border-[#FF0000]' 
                         : 'bg-transparent text-[#888] border-[#333] hover:border-[#FF0000] hover:text-[#FF0000]'
                     }`}
                     data-testid="manual-mode-button"
@@ -159,9 +187,9 @@ export default function Scanner({ token, onLogout }) {
                   </button>
                   <button
                     onClick={toggleCameraMode}
-                    className={`px-6 py-3 uppercase tracking-wider font-bold transition-all border-2 flex items-center gap-2 ${
+                    className={`px-6 py-3 uppercase tracking-wider font-bold border-2 flex items-center gap-2 ${
                       cameraMode 
-                        ? 'bg-[#FF0000] text-black border-[#FF0000]' 
+                        ? 'bg-[#FF0000] text-white border-[#FF0000]' 
                         : 'bg-transparent text-[#888] border-[#333] hover:border-[#FF0000] hover:text-[#FF0000]'
                     }`}
                     data-testid="camera-mode-button"
@@ -199,37 +227,53 @@ export default function Scanner({ token, onLogout }) {
                           TRY AGAIN
                         </button>
                       </div>
-                    ) : cameraReady ? (
-                      <div className="relative bg-black" style={{ aspectRatio: '1/1', maxHeight: '500px' }}>
-                        <QrReader
-                          constraints={{ facingMode: 'environment' }}
-                          onResult={handleQRScan}
-                          className="w-full h-full"
-                          containerStyle={{ width: '100%', height: '100%' }}
-                          videoContainerStyle={{ width: '100%', height: '100%', paddingTop: '0' }}
-                          videoStyle={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    ) : (
+                      <div className="relative bg-black rounded-lg overflow-hidden" style={{ aspectRatio: '4/3', maxHeight: '500px' }}>
+                        <Webcam
+                          ref={webcamRef}
+                          audio={false}
+                          screenshotFormat="image/jpeg"
+                          videoConstraints={{
+                            facingMode: 'environment',
+                            width: 1280,
+                            height: 720
+                          }}
+                          onUserMedia={handleUserMedia}
+                          onUserMediaError={handleUserMediaError}
+                          className="w-full h-full object-cover"
                         />
+                        
+                        {/* Scanning overlay */}
+                        <div className="absolute inset-0 pointer-events-none">
+                          {/* Corner markers */}
+                          <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-4 border-[#FF0000]">
+                            <div className="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-[#FF0000]"></div>
+                            <div className="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-[#FF0000]"></div>
+                            <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-[#FF0000]"></div>
+                            <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-[#FF0000]"></div>
+                          </div>
+                          
+                          {/* Scanning line animation */}
+                          <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 overflow-hidden">
+                            <div className="w-full h-0.5 bg-[#FF0000] animate-scan"></div>
+                          </div>
+                        </div>
+
                         {scanning && (
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                             <div className="text-[#FF0000] font-bold text-2xl uppercase">VALIDATING...</div>
                           </div>
                         )}
+                        
                         <div className="absolute top-4 left-4 right-4 bg-black/70 p-3 text-center">
                           <p className="text-[#FF0000] font-bold text-sm uppercase">Camera Active - Point at QR Code</p>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="bg-[#1E1E1E] border border-[#333] p-8 text-center space-y-4">
-                        <div className="animate-pulse">
-                          <Camera size={80} className="mx-auto text-[#FF0000]" />
-                        </div>
-                        <p className="text-[#888] font-mono text-sm">Initializing camera...</p>
                       </div>
                     )}
 
                     <div className="mt-6 p-4 bg-[#1E1E1E] border border-[#333]">
                       <p className="text-xs text-[#888] uppercase tracking-wider text-center">
-                        {cameraReady ? 'Auto-scans when QR code detected' : 'Grant camera permission when prompted'}
+                        {cameraError ? 'Grant camera permission when prompted' : 'Position QR code within the red square'}
                       </p>
                     </div>
                   </div>
@@ -295,7 +339,7 @@ export default function Scanner({ token, onLogout }) {
                 exit={{ opacity: 0, scale: 0.9 }}
               >
                 {scanResult.success ? (
-                  <div className="bg-[#FF0000] text-black p-12 text-center glow-green" data-testid="scan-success">
+                  <div className="bg-[#FF0000] text-white p-12 text-center glow-red" data-testid="scan-success">
                     <CheckCircle2 size={100} className="mx-auto mb-6" />
                     <h2 className="text-6xl font-bold uppercase mb-6">VALID TICKET</h2>
                     <div className="space-y-3">
