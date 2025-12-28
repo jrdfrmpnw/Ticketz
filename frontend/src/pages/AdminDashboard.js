@@ -50,12 +50,12 @@ export default function AdminDashboard({ token, user, onLogout }) {
           <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="concert-heading text-4xl md:text-6xl text-[#00FF94]" data-testid="dashboard-heading">ADMIN</h1>
+                <h1 className="concert-heading text-4xl md:text-6xl text-[#FF0000]" data-testid="dashboard-heading">ADMIN</h1>
                 <p className="text-[#888] font-mono text-sm mt-1">{user.email}</p>
               </div>
               <button
                 onClick={onLogout}
-                className="bg-transparent border-2 border-[#333] text-white uppercase tracking-wider px-6 py-3 hover:border-white hover:text-[#00FF94] transition-all flex items-center gap-2"
+                className="bg-transparent border-2 border-[#333] text-white uppercase tracking-wider px-6 py-3 hover:border-white hover:text-[#FF0000] transition-all flex items-center gap-2"
                 data-testid="logout-button"
               >
                 <LogOut size={18} />
@@ -81,7 +81,7 @@ export default function AdminDashboard({ token, user, onLogout }) {
 
           {loading ? (
             <div className="text-center py-20">
-              <div className="inline-block animate-spin h-12 w-12 border-4 border-[#00FF94] border-t-transparent" />
+              <div className="inline-block animate-spin h-12 w-12 border-4 border-[#FF0000] border-t-transparent" />
             </div>
           ) : events.length === 0 ? (
             <div className="text-center py-20">
@@ -98,20 +98,20 @@ export default function AdminDashboard({ token, user, onLogout }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     onClick={() => navigate(`/events/${event.event_id}`)}
-                    className="bg-[#121212]/80 border border-[#333] p-6 hover:border-[#00FF94]/50 transition-colors cursor-pointer group"
+                    className="bg-[#121212]/80 border border-[#333] p-6 hover:border-[#FF0000]/50 transition-colors cursor-pointer group"
                     data-testid={`event-card-${event.event_id}`}
                   >
-                    <h3 className="text-2xl font-bold uppercase mb-4 group-hover:text-[#00FF94] transition-colors">
+                    <h3 className="text-2xl font-bold uppercase mb-4 group-hover:text-[#FF0000] transition-colors">
                       {event.name}
                     </h3>
                     
                     <div className="space-y-2 text-sm text-[#888]">
                       <div className="flex items-center gap-2">
-                        <MapPin size={16} className="text-[#00FF94]" />
+                        <MapPin size={16} className="text-[#FF0000]" />
                         <span>{event.venue}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Calendar size={16} className="text-[#00FF94]" />
+                        <Calendar size={16} className="text-[#FF0000]" />
                         <span>{event.date} at {event.time}</span>
                       </div>
                     </div>
@@ -119,7 +119,7 @@ export default function AdminDashboard({ token, user, onLogout }) {
                     <div className="mt-6 pt-4 border-t border-[#333] grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-[#888] text-xs uppercase tracking-wider mb-1">Generated</div>
-                        <div className="text-2xl font-bold font-mono text-[#00FF94]">{eventStats.total_generated || 0}</div>
+                        <div className="text-2xl font-bold font-mono text-[#FF0000]">{eventStats.total_generated || 0}</div>
                       </div>
                       <div>
                         <div className="text-[#888] text-xs uppercase tracking-wider mb-1">Scanned</div>

@@ -120,7 +120,7 @@ export default function Scanner({ token, onLogout }) {
       {/* Header */}
       <div className="bg-[#121212]/90 border-b-2 border-[#333] p-4">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <h1 className="concert-heading text-3xl text-[#00FF94]" data-testid="scanner-heading">SCANNER</h1>
+          <h1 className="concert-heading text-3xl text-[#FF0000]" data-testid="scanner-heading">SCANNER</h1>
           <button
             onClick={onLogout}
             className="text-[#888] hover:text-white transition-colors"
@@ -149,8 +149,8 @@ export default function Scanner({ token, onLogout }) {
                     onClick={() => { setCameraMode(false); setCameraError(null); }}
                     className={`px-6 py-3 uppercase tracking-wider font-bold transition-all border-2 flex items-center gap-2 ${
                       !cameraMode 
-                        ? 'bg-[#00FF94] text-black border-[#00FF94]' 
-                        : 'bg-transparent text-[#888] border-[#333] hover:border-[#00FF94] hover:text-[#00FF94]'
+                        ? 'bg-[#FF0000] text-black border-[#FF0000]' 
+                        : 'bg-transparent text-[#888] border-[#333] hover:border-[#FF0000] hover:text-[#FF0000]'
                     }`}
                     data-testid="manual-mode-button"
                   >
@@ -161,8 +161,8 @@ export default function Scanner({ token, onLogout }) {
                     onClick={toggleCameraMode}
                     className={`px-6 py-3 uppercase tracking-wider font-bold transition-all border-2 flex items-center gap-2 ${
                       cameraMode 
-                        ? 'bg-[#00FF94] text-black border-[#00FF94]' 
-                        : 'bg-transparent text-[#888] border-[#333] hover:border-[#00FF94] hover:text-[#00FF94]'
+                        ? 'bg-[#FF0000] text-black border-[#FF0000]' 
+                        : 'bg-transparent text-[#888] border-[#333] hover:border-[#FF0000] hover:text-[#FF0000]'
                     }`}
                     data-testid="camera-mode-button"
                   >
@@ -173,10 +173,10 @@ export default function Scanner({ token, onLogout }) {
 
                 {cameraMode ? (
                   /* Camera Scanner */
-                  <div className="bg-[#121212]/80 border-2 border-[#00FF94] p-6 scanline-effect" data-testid="camera-scanner">
+                  <div className="bg-[#121212]/80 border-2 border-[#FF0000] p-6 scanline-effect" data-testid="camera-scanner">
                     <div className="flex items-center justify-center gap-3 mb-6">
-                      <Camera size={48} className="text-[#00FF94] animate-pulse" />
-                      <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN QR CODE</h2>
+                      <Camera size={48} className="text-[#FF0000] animate-pulse" />
+                      <h2 className="text-3xl font-bold uppercase text-[#FF0000]">SCAN QR CODE</h2>
                     </div>
 
                     {cameraError ? (
@@ -211,17 +211,17 @@ export default function Scanner({ token, onLogout }) {
                         />
                         {scanning && (
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <div className="text-[#00FF94] font-bold text-2xl uppercase">VALIDATING...</div>
+                            <div className="text-[#FF0000] font-bold text-2xl uppercase">VALIDATING...</div>
                           </div>
                         )}
                         <div className="absolute top-4 left-4 right-4 bg-black/70 p-3 text-center">
-                          <p className="text-[#00FF94] font-bold text-sm uppercase">Camera Active - Point at QR Code</p>
+                          <p className="text-[#FF0000] font-bold text-sm uppercase">Camera Active - Point at QR Code</p>
                         </div>
                       </div>
                     ) : (
                       <div className="bg-[#1E1E1E] border border-[#333] p-8 text-center space-y-4">
                         <div className="animate-pulse">
-                          <Camera size={80} className="mx-auto text-[#00FF94]" />
+                          <Camera size={80} className="mx-auto text-[#FF0000]" />
                         </div>
                         <p className="text-[#888] font-mono text-sm">Initializing camera...</p>
                       </div>
@@ -235,10 +235,10 @@ export default function Scanner({ token, onLogout }) {
                   </div>
                 ) : (
                   /* Manual Entry */
-                  <div className="bg-[#121212]/80 border-2 border-[#00FF94] p-8 scanline-effect">
+                  <div className="bg-[#121212]/80 border-2 border-[#FF0000] p-8 scanline-effect">
                     <div className="flex items-center justify-center gap-3 mb-6">
-                      <ScanLine size={48} className="text-[#00FF94] animate-pulse" />
-                      <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN TICKET</h2>
+                      <ScanLine size={48} className="text-[#FF0000] animate-pulse" />
+                      <h2 className="text-3xl font-bold uppercase text-[#FF0000]">SCAN TICKET</h2>
                     </div>
 
                     <form onSubmit={handleManualScan} className="space-y-6" data-testid="scan-form">
@@ -295,7 +295,7 @@ export default function Scanner({ token, onLogout }) {
                 exit={{ opacity: 0, scale: 0.9 }}
               >
                 {scanResult.success ? (
-                  <div className="bg-[#00FF94] text-black p-12 text-center glow-green" data-testid="scan-success">
+                  <div className="bg-[#FF0000] text-black p-12 text-center glow-green" data-testid="scan-success">
                     <CheckCircle2 size={100} className="mx-auto mb-6" />
                     <h2 className="text-6xl font-bold uppercase mb-6">VALID TICKET</h2>
                     <div className="space-y-3">

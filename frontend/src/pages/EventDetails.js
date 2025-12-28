@@ -66,7 +66,7 @@ export default function EventDetails({ token }) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin h-12 w-12 border-4 border-[#00FF94] border-t-transparent" />
+        <div className="animate-spin h-12 w-12 border-4 border-[#FF0000] border-t-transparent" />
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function EventDetails({ token }) {
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-12">
         <button
           onClick={() => navigate('/dashboard')}
-          className="flex items-center gap-2 text-[#00FF94] hover:text-[#00CC76] transition-colors mb-8"
+          className="flex items-center gap-2 text-[#FF0000] hover:text-[#CC0000] transition-colors mb-8"
           data-testid="back-button"
         >
           <ArrowLeft size={20} />
@@ -88,7 +88,7 @@ export default function EventDetails({ token }) {
           animate={{ opacity: 1, y: 0 }}
           className="bg-[#121212]/80 border-2 border-[#333] p-8 md:p-12 mb-8"
         >
-          <h1 className="concert-heading text-4xl md:text-6xl text-[#00FF94] mb-4" data-testid="event-name">{event.name}</h1>
+          <h1 className="concert-heading text-4xl md:text-6xl text-[#FF0000] mb-4" data-testid="event-name">{event.name}</h1>
           <p className="text-[#888] text-lg">{event.venue}</p>
           <p className="text-[#888] font-mono">{event.date} at {event.time}</p>
         </motion.div>
@@ -102,14 +102,14 @@ export default function EventDetails({ token }) {
             className="bg-[#121212]/80 border border-[#333] p-8"
           >
             <div className="flex items-center gap-2 mb-6">
-              <BarChart3 size={24} className="text-[#00FF94]" />
+              <BarChart3 size={24} className="text-[#FF0000]" />
               <h2 className="text-2xl font-bold uppercase">Statistics</h2>
             </div>
             
             <div className="space-y-6">
               <div className="border-b border-[#333] pb-4">
                 <div className="text-[#888] text-sm uppercase tracking-wider mb-2">Total Generated</div>
-                <div className="text-4xl font-bold font-mono text-[#00FF94]" data-testid="total-generated">{stats.total_generated}</div>
+                <div className="text-4xl font-bold font-mono text-[#FF0000]" data-testid="total-generated">{stats.total_generated}</div>
               </div>
               
               <div className="border-b border-[#333] pb-4">
@@ -132,7 +132,7 @@ export default function EventDetails({ token }) {
             className="bg-[#121212]/80 border border-[#333] p-8"
           >
             <div className="flex items-center gap-2 mb-6">
-              <Ticket size={24} className="text-[#00FF94]" />
+              <Ticket size={24} className="text-[#FF0000]" />
               <h2 className="text-2xl font-bold uppercase">Generate Tickets</h2>
             </div>
 

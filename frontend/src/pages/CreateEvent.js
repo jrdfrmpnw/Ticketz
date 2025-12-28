@@ -38,7 +38,7 @@ export default function CreateEvent({ token }) {
       <div className="max-w-4xl mx-auto px-4 md:px-8 py-12">
         <button
           onClick={() => navigate('/dashboard')}
-          className="flex items-center gap-2 text-[#00FF94] hover:text-[#00CC76] transition-colors mb-8"
+          className="flex items-center gap-2 text-[#FF0000] hover:text-[#CC0000] transition-colors mb-8"
           data-testid="back-button"
         >
           <ArrowLeft size={20} />
@@ -50,7 +50,7 @@ export default function CreateEvent({ token }) {
           animate={{ opacity: 1, y: 0 }}
           className="bg-[#121212]/80 border-2 border-[#333] p-8 md:p-12"
         >
-          <h1 className="concert-heading text-5xl md:text-7xl text-[#00FF94] mb-8" data-testid="create-event-heading">
+          <h1 className="concert-heading text-5xl md:text-7xl text-[#FF0000] mb-8" data-testid="create-event-heading">
             CREATE EVENT
           </h1>
 

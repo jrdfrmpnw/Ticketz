@@ -54,7 +54,7 @@ export default function Login({ onLogin }) {
         className="relative z-10 w-full max-w-md"
       >
         <div className="bg-[#121212]/80 border-2 border-[#333] p-8 md:p-12">
-          <h1 className="concert-heading text-5xl md:text-7xl text-[#00FF94] mb-2 text-center" data-testid="login-heading">
+          <h1 className="concert-heading text-5xl md:text-7xl text-[#FF0000] mb-2 text-center" data-testid="login-heading">
             VENUEPASS
           </h1>
           <p className="text-center text-[#888] uppercase tracking-widest text-xs mb-8 font-mono">Concert Ticketing System</p>
@@ -114,7 +114,7 @@ export default function Login({ onLogin }) {
           <div className="mt-6 text-center">
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="text-[#00FF94] hover:text-[#00CC76] uppercase text-sm tracking-wider transition-colors"
+              className="text-[#FF0000] hover:text-[#CC0000] uppercase text-sm tracking-wider transition-colors"
               data-testid="toggle-auth-mode"
             >
               {isLogin ? 'Need an account? Register' : 'Have an account? Log In'}
