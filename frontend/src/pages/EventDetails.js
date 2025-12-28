@@ -86,7 +86,7 @@ export default function EventDetails({ token }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#121212] border-2 border-[#333] p-8 md:p-12 mb-8"
+          className="bg-[#121212]/80 border-2 border-[#333] p-8 md:p-12 mb-8"
         >
           <h1 className="concert-heading text-4xl md:text-6xl text-[#00FF94] mb-4" data-testid="event-name">{event.name}</h1>
           <p className="text-[#888] text-lg">{event.venue}</p>
@@ -99,7 +99,7 @@ export default function EventDetails({ token }) {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-[#121212] border border-[#333] p-8"
+            className="bg-[#121212]/80 border border-[#333] p-8"
           >
             <div className="flex items-center gap-2 mb-6">
               <BarChart3 size={24} className="text-[#00FF94]" />
@@ -129,7 +129,7 @@ export default function EventDetails({ token }) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-[#121212] border border-[#333] p-8"
+            className="bg-[#121212]/80 border border-[#333] p-8"
           >
             <div className="flex items-center gap-2 mb-6">
               <Ticket size={24} className="text-[#00FF94]" />

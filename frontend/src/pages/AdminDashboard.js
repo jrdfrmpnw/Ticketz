@@ -46,7 +46,7 @@ export default function AdminDashboard({ token, user, onLogout }) {
     <div className="min-h-screen">
       <div className="grid-bg min-h-screen">
         {/* Header */}
-        <div className="bg-[#121212]/90 border-b-2 border-[#333]">
+        <div className="bg-[#121212]/80/90 border-b-2 border-[#333]">
           <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
             <div className="flex justify-between items-center">
               <div>
@@ -98,7 +98,7 @@ export default function AdminDashboard({ token, user, onLogout }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     onClick={() => navigate(`/events/${event.event_id}`)}
-                    className="bg-[#121212] border border-[#333] p-6 hover:border-[#00FF94]/50 transition-colors cursor-pointer group"
+                    className="bg-[#121212]/80 border border-[#333] p-6 hover:border-[#00FF94]/50 transition-colors cursor-pointer group"
                     data-testid={`event-card-${event.event_id}`}
                   >
                     <h3 className="text-2xl font-bold uppercase mb-4 group-hover:text-[#00FF94] transition-colors">
