@@ -1,16 +1,18 @@
 .retro-button {
-  background: rgba(0, 255, 148, 0.8);
-  color: #000;
+  background: rgba(255, 0, 0, 0.9);
+  color: #fff;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   padding: 1rem 2rem;
-  border: 2px solid transparent;
+  border: 2px solid #FF0000;
   cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .retro-button:hover {
   border-color: #fff;
+  background: rgba(255, 0, 0, 1);
 }
 
 .retro-input {
@@ -25,7 +27,7 @@
 
 .retro-input:focus {
   outline: none;
-  border-bottom-color: #00FF94;
+  border-bottom-color: #FF0000;
 }
 
 .retro-input::placeholder {
@@ -88,8 +90,10 @@
 }
 
 .concert-heading {
-  font-family: 'Anton', sans-serif;
+  font-family: 'Bebas Neue', 'Anton', sans-serif;
   text-transform: uppercase;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.05em;
   line-height: 0.9;
+  color: #FF0000;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
 }
