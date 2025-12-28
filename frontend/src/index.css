@@ -68,6 +68,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Hide Made with Emergent link */
+.emergent-badge,
+[href*="emergent"],
+a[href*="emergentagent.com"]:not([href*="customer-assets"]) {
+  display: none !important;
+}
+
 .scanline-effect {
   position: relative;
 }
