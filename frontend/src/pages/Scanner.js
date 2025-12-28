@@ -97,16 +97,31 @@ export default function Scanner({ token, onLogout }) {
         return;
       }
       
-      // Request camera permission
+      // Request camera permission - try environment first (mobile), fallback to user (desktop)
       try {
-        await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        let stream;
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: { ideal: 'environment' } } 
+          });
+        } catch (err) {
+          // Fallback to front camera (desktop/laptop)
+          stream = await navigator.mediaDevices.getUserMedia({ 
+            video: true 
+          });
+        }
+        
+        // Stop the test stream
+        stream.getTracks().forEach(track => track.stop());
+        
         setCameraMode(true);
         toast.success('Camera ready - point at QR code');
-        // Start scanning after a short delay to let camera initialize
+        // Start scanning after a delay to let webcam component initialize
         setTimeout(() => {
           startScanning();
-        }, 1000);
+        }, 1500);
       } catch (err) {
+        console.error('Camera error:', err);
         if (err.name === 'NotAllowedError') {
           setCameraError('Camera permission denied. Please click "Allow" when your browser asks for camera access.');
           toast.error('Camera permission needed');
