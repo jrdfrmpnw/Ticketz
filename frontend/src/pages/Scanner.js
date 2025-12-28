@@ -58,6 +58,7 @@ export default function Scanner({ token, onLogout }) {
   };
 
   const startScanning = useCallback(() => {
+    console.log('Starting QR code scanner...');
     const codeReader = new BrowserMultiFormatReader();
     
     scanIntervalRef.current = setInterval(async () => {
@@ -67,15 +68,18 @@ export default function Scanner({ token, onLogout }) {
           try {
             const result = await codeReader.decodeFromImageUrl(imageSrc);
             if (result && result.text) {
-              console.log('QR Code detected:', result.text);
+              console.log('✓ QR Code detected:', result.text);
+              toast.success('QR Code detected!');
               validateTicket(result.text);
             }
           } catch (err) {
-            // No QR code found in this frame, continue scanning
+            // No QR code found in this frame, continue scanning silently
           }
         }
       }
     }, 500); // Scan every 500ms
+    
+    console.log('✓ QR scanner started');
   }, [scanning]);
 
   const handleRescan = () => {
