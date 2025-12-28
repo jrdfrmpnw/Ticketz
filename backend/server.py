@@ -258,6 +258,27 @@ async def get_event(event_id: str, current_user: dict = Depends(get_current_user
         event['created_at'] = datetime.fromisoformat(event['created_at'])
     return event
 
+@api_router.delete("/events/{event_id}")
+async def delete_event(event_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Only admins can delete events")
+    
+    # Check if event exists
+    event = await db.events.find_one({"event_id": event_id}, {"_id": 0})
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    
+    # Delete all tickets associated with this event
+    await db.tickets.delete_many({"event_id": event_id})
+    
+    # Delete the event
+    result = await db.events.delete_one({"event_id": event_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Event not found")
+    
+    return {"success": True, "message": "Event and associated tickets deleted successfully"}
+
 # Ticket Routes
 @api_router.post("/tickets/generate")
 async def generate_tickets(ticket_data: TicketGenerate, current_user: dict = Depends(get_current_user)):
