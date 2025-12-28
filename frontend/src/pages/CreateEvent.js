@@ -48,7 +48,7 @@ export default function CreateEvent({ token }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#121212] border-2 border-[#333] p-8 md:p-12"
+          className="bg-[#121212]/80 border-2 border-[#333] p-8 md:p-12"
         >
           <h1 className="concert-heading text-5xl md:text-7xl text-[#00FF94] mb-8" data-testid="create-event-heading">
             CREATE EVENT

@@ -46,7 +46,7 @@ export default function AdminDashboard({ token, user, onLogout }) {
     <div className="min-h-screen">
       <div className="grid-bg min-h-screen">
         {/* Header */}
-        <div className="bg-[#121212] border-b-2 border-[#333]">
+        <div className="bg-[#121212]/90 border-b-2 border-[#333]">
           <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
             <div className="flex justify-between items-center">
               <div>

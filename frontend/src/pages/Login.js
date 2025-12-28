@@ -45,7 +45,7 @@ export default function Login({ onLogin }) {
            backgroundSize: 'cover',
            backgroundPosition: 'center'
          }}>
-      <div className="absolute inset-0 bg-black/80" />
+      <div className="absolute inset-0 bg-black/60" />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -53,7 +53,7 @@ export default function Login({ onLogin }) {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-md"
       >
-        <div className="bg-[#121212] border-2 border-[#333] p-8 md:p-12">
+        <div className="bg-[#121212]/80 border-2 border-[#333] p-8 md:p-12">
           <h1 className="concert-heading text-5xl md:text-7xl text-[#00FF94] mb-2 text-center" data-testid="login-heading">
             VENUEPASS
           </h1>

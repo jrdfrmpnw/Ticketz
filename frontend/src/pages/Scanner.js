@@ -118,7 +118,7 @@ export default function Scanner({ token, onLogout }) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <div className="bg-[#121212] border-b-2 border-[#333] p-4">
+      <div className="bg-[#121212]/90 border-b-2 border-[#333] p-4">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <h1 className="concert-heading text-3xl text-[#00FF94]" data-testid="scanner-heading">SCANNER</h1>
           <button
@@ -173,7 +173,7 @@ export default function Scanner({ token, onLogout }) {
 
                 {cameraMode ? (
                   /* Camera Scanner */
-                  <div className="bg-[#121212] border-2 border-[#00FF94] p-6 scanline-effect" data-testid="camera-scanner">
+                  <div className="bg-[#121212]/80 border-2 border-[#00FF94] p-6 scanline-effect" data-testid="camera-scanner">
                     <div className="flex items-center justify-center gap-3 mb-6">
                       <Camera size={48} className="text-[#00FF94] animate-pulse" />
                       <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN QR CODE</h2>
@@ -235,7 +235,7 @@ export default function Scanner({ token, onLogout }) {
                   </div>
                 ) : (
                   /* Manual Entry */
-                  <div className="bg-[#121212] border-2 border-[#00FF94] p-8 scanline-effect">
+                  <div className="bg-[#121212]/80 border-2 border-[#00FF94] p-8 scanline-effect">
                     <div className="flex items-center justify-center gap-3 mb-6">
                       <ScanLine size={48} className="text-[#00FF94] animate-pulse" />
                       <h2 className="text-3xl font-bold uppercase text-[#00FF94]">SCAN TICKET</h2>
