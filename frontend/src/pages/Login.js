@@ -41,7 +41,7 @@ export default function Login({ onLogin }) {
   return (
     <div className="min-h-screen flex items-center justify-center p-4" 
          style={{
-           backgroundImage: 'url(https://images.unsplash.com/photo-1681999784511-60c16223abc0?crop=entropy&cs=srgb&fm=jpg&q=85)',
+           backgroundImage: 'url(https://customer-assets.emergentagent.com/job_venuepass-1/artifacts/79dfg0ta_image0.jpeg)',
            backgroundSize: 'cover',
            backgroundPosition: 'center'
          }}>
