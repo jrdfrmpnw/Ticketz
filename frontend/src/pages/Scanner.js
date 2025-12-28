@@ -142,12 +142,13 @@ export default function Scanner({ token, onLogout }) {
   };
 
   const handleUserMedia = () => {
-    console.log('Camera stream started');
+    console.log('✓ Camera stream started successfully');
+    toast.success('Camera active');
   };
 
   const handleUserMediaError = (error) => {
-    console.error('Camera error:', error);
-    setCameraError('Failed to access camera. Please check permissions.');
+    console.error('✗ Camera error:', error);
+    setCameraError(`Failed to access camera: ${error.message || error.name}`);
     setCameraMode(false);
     toast.error('Camera access failed');
   };
