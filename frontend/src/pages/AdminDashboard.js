@@ -111,33 +111,47 @@ export default function AdminDashboard({ token, user, onLogout }) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    onClick={() => navigate(`/events/${event.event_id}`)}
-                    className="bg-[#121212]/80 border border-[#333] p-6 hover:border-[#FF0000]/50 transition-colors cursor-pointer group"
+                    className="bg-[#121212]/80 border border-[#333] p-6 hover:border-[#FF0000]/50 cursor-pointer group relative"
                     data-testid={`event-card-${event.event_id}`}
                   >
-                    <h3 className="text-2xl font-bold uppercase mb-4 group-hover:text-[#FF0000] transition-colors">
-                      {event.name}
-                    </h3>
-                    
-                    <div className="space-y-2 text-sm text-[#888]">
-                      <div className="flex items-center gap-2">
-                        <MapPin size={16} className="text-[#FF0000]" />
-                        <span>{event.venue}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar size={16} className="text-[#FF0000]" />
-                        <span>{event.date} at {event.time}</span>
-                      </div>
-                    </div>
+                    {/* Delete button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteConfirm(event);
+                      }}
+                      className="absolute top-4 right-4 text-[#888] hover:text-[#FF0000] opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                      data-testid={`delete-event-${event.event_id}`}
+                      title="Delete event"
+                    >
+                      <Trash2 size={20} />
+                    </button>
 
-                    <div className="mt-6 pt-4 border-t border-[#333] grid grid-cols-2 gap-4">
-                      <div>
-                        <div className="text-[#888] text-xs uppercase tracking-wider mb-1">Generated</div>
-                        <div className="text-2xl font-bold font-mono text-[#FF0000]">{eventStats.total_generated || 0}</div>
+                    <div onClick={() => navigate(`/events/${event.event_id}`)}>
+                      <h3 className="text-2xl font-bold uppercase mb-4 group-hover:text-[#FF0000] transition-colors pr-8">
+                        {event.name}
+                      </h3>
+                      
+                      <div className="space-y-2 text-sm text-[#888]">
+                        <div className="flex items-center gap-2">
+                          <MapPin size={16} className="text-[#FF0000]" />
+                          <span>{event.venue}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Calendar size={16} className="text-[#FF0000]" />
+                          <span>{event.date} at {event.time}</span>
+                        </div>
                       </div>
-                      <div>
-                        <div className="text-[#888] text-xs uppercase tracking-wider mb-1">Scanned</div>
-                        <div className="text-2xl font-bold font-mono text-[#FF00FF]">{eventStats.total_scanned || 0}</div>
+
+                      <div className="mt-6 pt-4 border-t border-[#333] grid grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-[#888] text-xs uppercase tracking-wider mb-1">Generated</div>
+                          <div className="text-2xl font-bold font-mono text-[#FF0000]">{eventStats.total_generated || 0}</div>
+                        </div>
+                        <div>
+                          <div className="text-[#888] text-xs uppercase tracking-wider mb-1">Scanned</div>
+                          <div className="text-2xl font-bold font-mono text-[#FF00FF]">{eventStats.total_scanned || 0}</div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
