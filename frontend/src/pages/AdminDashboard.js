@@ -161,6 +161,59 @@ export default function AdminDashboard({ token, user, onLogout }) {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50"
+            onClick={() => setDeleteConfirm(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#121212] border-2 border-[#FF0000] p-8 max-w-md w-full"
+              data-testid="delete-confirmation-modal"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Trash2 size={32} className="text-[#FF0000]" />
+                <h2 className="text-2xl font-bold uppercase text-[#FF0000]">Delete Event?</h2>
+              </div>
+              
+              <p className="text-[#888] mb-2">
+                Are you sure you want to delete <span className="text-white font-bold">"{deleteConfirm.name}"</span>?
+              </p>
+              
+              <p className="text-[#FF3333] text-sm mb-6">
+                This will permanently delete the event and all associated tickets. This action cannot be undone.
+              </p>
+              
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="flex-1 px-6 py-3 bg-transparent border-2 border-[#333] text-white uppercase tracking-wider hover:border-white transition-colors"
+                  data-testid="cancel-delete-button"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleDeleteEvent(deleteConfirm.event_id, deleteConfirm.name)}
+                  className="flex-1 retro-button flex items-center justify-center gap-2"
+                  data-testid="confirm-delete-button"
+                >
+                  <Trash2 size={18} />
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
