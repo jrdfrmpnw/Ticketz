@@ -10,6 +10,7 @@ export default function AdminDashboard({ token, user, onLogout }) {
   const [events, setEvents] = useState([]);
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
