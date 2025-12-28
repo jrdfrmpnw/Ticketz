@@ -71,8 +71,14 @@ h1, h2, h3, h4, h5, h6 {
 /* Hide Made with Emergent link */
 .emergent-badge,
 [href*="emergent"],
-a[href*="emergentagent.com"]:not([href*="customer-assets"]) {
+a[href*="emergentagent.com"]:not([href*="customer-assets"]),
+div[style*="position: fixed"][style*="bottom"],
+div[style*="position: fixed"][style*="right"],
+button[style*="position: fixed"],
+.emergent-branding {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 .scanline-effect {
